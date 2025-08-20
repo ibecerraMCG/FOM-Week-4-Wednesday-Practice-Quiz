@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 4 Wednesday Practice Quiz</title>
+    <style>
+        /* --- Color Variables --- */
+        :root {
+            /* Default: Dark Theme */
+            --bg-color: #2d343e; /* Dark background */
+            --container-bg: #3c424f; /* Slightly lighter container */
+            --text-color: #e8e6e3; /* Light text */
+            --question-text-color: #8ab4f8; /* Light blue for questions */
+            --lo-text-color: #b0c4de; /* Lighter blue for learning objective */
+            --border-color: #555; /* Darker borders */
+            --separator-color: #4a4f5a;
+            --label-bg: #454c5a;
+            --label-border: #6c757d;
+            --label-hover-bg: #525966;
+            --label-hover-border: #7a828a;
+            --button-bg: #8ab4f8;
+            --button-text: #202124;
+            --button-hover-bg: #a3c5f9;
+            --button-disabled-bg: #5f6368;
+            --feedback-correct-bg: #344e41;
+            --feedback-correct-text: #c7f9cc;
+            --feedback-correct-border: #52b788;
+            --feedback-incorrect-bg: #5e2129;
+            --feedback-incorrect-text: #f8d7da;
+            --feedback-incorrect-border: #a4133c;
+            --feedback-rationale-text: #adb5bd; /* Lighter gray for rationale */
+            --feedback-source-text: #c7d3e0;
+            --feedback-separator: #6c757d;
+            --radio-accent: #8ab4f8;
+        }
+
+        .light-theme {
+            --bg-color: #eef2f7;
+            --container-bg: #ffffff;
+            --text-color: #343a40;
+            --question-text-color: #0056b3;
+            --lo-text-color: #5a6e8a;
+            --border-color: #dee2e6;
+            --separator-color: #e9ecef;
+            --label-bg: #f8f9fa;
+            --label-border: #ced4da;
+            --label-hover-bg: #e2e6ea;
+            --label-hover-border: #adb5bd;
+            --button-bg: #007bff;
+            --button-text: white;
+            --button-hover-bg: #0056b3;
+            --button-disabled-bg: #6c757d;
+            --feedback-correct-bg: #d1e7dd;
+            --feedback-correct-text: #0f5132;
+            --feedback-correct-border: #badbcc;
+            --feedback-incorrect-bg: #f8d7da;
+            --feedback-incorrect-text: #842029;
+            --feedback-incorrect-border: #f5c2c7;
+            --feedback-rationale-text: #495057;
+            --feedback-source-text: #343a40;
+            --feedback-separator: #ccc;
+            --radio-accent: #007bff;
+        }
+
+        /* --- General Styles --- */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+            line-height: 1.7;
+            margin: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding-bottom: 40px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        #theme-toggle-button {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            padding: 8px 12px;
+            background-color: var(--button-bg);
+            color: var(--button-text);
+            border: 1px solid var(--label-border);
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            z-index: 1000;
+             transition: background-color 0.3s, color 0.3s;
+        }
+         #theme-toggle-button:hover {
+             opacity: 0.8;
+         }
+
+
+        #quiz-container {
+            max-width: 900px;
+            margin: 80px auto 30px auto;
+            background: var(--container-bg);
+            padding: 25px 35px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            border: 1px solid var(--border-color);
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        .question-block {
+            margin-bottom: 35px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid var(--separator-color);
+            transition: border-color 0.3s;
+        }
+
+        .question-block:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 5px;
+        }
+        
+        .learning-objective {
+            font-size: 0.85em;
+            font-style: italic;
+            color: var(--lo-text-color);
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed var(--separator-color);
+        }
+
+        .question-text {
+            font-weight: 600;
+            font-size: 1.1em;
+            margin-bottom: 18px;
+            color: var(--question-text-color);
+            transition: color 0.3s;
+        }
+
+        .options label {
+            display: block;
+            margin-bottom: 12px;
+            cursor: pointer;
+            padding: 10px 15px;
+            border-radius: 6px;
+            border: 1px solid var(--label-border);
+            background-color: var(--label-bg);
+            transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+        }
+
+        .options label:hover {
+            background-color: var(--label-hover-bg);
+            border-color: var(--label-hover-border);
+        }
+
+        .options input[type="radio"]:checked+span {
+             font-weight: bold;
+             color: var(--question-text-color);
+        }
+        .options input[type="radio"] {
+            margin-right: 12px;
+            accent-color: var(--radio-accent);
+        }
+
+        .button-container {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .check-button {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.95em;
+            transition: background-color 0.2s, color 0.2s, opacity 0.2s;
+            background-color: var(--button-bg);
+            color: var(--button-text);
+        }
+
+        .check-button:hover {
+            opacity: 0.85;
+        }
+
+         .check-button:disabled {
+             background-color: var(--button-disabled-bg);
+             cursor: not-allowed;
+             opacity: 0.7;
+         }
+
+        .feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 6px;
+            font-size: 0.95em;
+            display: none;
+            border: 1px solid transparent;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+        }
+
+        .feedback.correct {
+            background-color: var(--feedback-correct-bg);
+            color: var(--feedback-correct-text);
+            border-color: var(--feedback-correct-border);
+            display: block;
+        }
+
+        .feedback.incorrect {
+            background-color: var(--feedback-incorrect-bg);
+            color: var(--feedback-incorrect-text);
+            border-color: var(--feedback-incorrect-border);
+            display: block;
+        }
+
+        .feedback-status {
+             font-weight: bold;
+             font-size: 1.1em;
+             display: block;
+             margin-bottom: 8px;
+        }
+
+        .feedback-rationale {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px dashed var(--feedback-separator);
+            font-size: 0.9em;
+            color: var(--feedback-rationale-text);
+            transition: color 0.3s, border-color 0.3s;
+        }
+        
+        .feedback-source {
+            margin-top: 10px;
+            font-size: 0.85em;
+            font-style: italic;
+            color: var(--feedback-source-text);
+            background-color: rgba(0,0,0,0.1);
+            padding: 8px;
+            border-radius: 4px;
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--question-text-color);
+            margin-top: 30px;
+            margin-bottom: 30px;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+    </style>
+</head>
+<body>
+
+    <button id="theme-toggle-button">Toggle Theme</button>
+    <h1>Week 4 Wednesday Practice Quiz</h1>
+
+    <div id="quiz-container">
+        <!-- Questions will be loaded here by JavaScript -->
+    </div>
+
+    <script>
+        const quizData = [
+            // Endomembranes Questions
+            {
+                learningObjective: "LO 1 (Endomembranes): Define the term “Signal sequence” and describe how signal sequences are used to sort cargo to various cellular organelles.",
+                question: "A protein that is destined to be imported into the mitochondrial matrix is synthesized in the cytosol. Which feature of this protein is essential for its correct targeting from the cytosol to the mitochondria?",
+                options: { 
+                    A: "A C-terminal KDEL sequence", 
+                    B: "An N-terminal hydrophobic signal sequence", 
+                    C: "An N-terminal signal sequence rich in positively charged amino acids", 
+                    D: "A mannose-6-phosphate modification" 
+                },
+                correctAnswer: "C",
+                rationale: "Mitochondrial import requires a specific N-terminal signal sequence. This sequence forms an amphipathic alpha-helix with positively charged amino acids (like arginine and lysine) on one side and hydrophobic residues on the other. This 'zipcode' is recognized by import receptors on the mitochondrial surface.",
+                source: "'Import into mitochondria... EXAMPLE OF SIGNAL SEQUENCE +H3N-Met-Leu-Ser-Leu-Arg-Gln-Ser-Ile-Arg-Phe-Phe-Lys-Pro-Ala-Thr-Arg... Positively charged amino acids are shown in red...' (Endomembranes, Page 4)"
+            },
+            {
+                learningObjective: "LO 1 (Endomembranes): Define the term “Signal sequence” and describe how signal sequences are used to sort cargo to various cellular organelles.",
+                question: "A researcher genetically engineers a cytosolic protein to include a -Ser-Lys-Leu- sequence at its C-terminus. Where would this modified protein most likely be transported?",
+                options: { 
+                    A: "The nucleus", 
+                    B: "The mitochondrial matrix", 
+                    C: "The lumen of the ER", 
+                    D: "The peroxisome" 
+                },
+                correctAnswer: "D",
+                rationale: "The tripeptide sequence -Ser-Lys-Leu- (SKL) at the C-terminus of a protein is a well-characterized signal sequence that targets the protein for import into peroxisomes.",
+                source: "'Import into peroxisomes... -Ser-Lys-Leu-' (Endomembranes, Page 4)"
+            },
+            {
+                learningObjective: "LO 1 (Endomembranes): Define the term “Signal sequence” and describe how signal sequences are used to sort cargo to various cellular organelles.",
+                question: "A soluble protein residing in the lumen of the endoplasmic reticulum, such as BiP, needs to be retained there and returned if it accidentally escapes to the Golgi. What signal sequence mediates this retrieval process?",
+                options: { 
+                    A: "An N-terminal hydrophobic sequence", 
+                    B: "A C-terminal KDEL sequence", 
+                    C: "A nuclear localization signal", 
+                    D: "A mannose-6-phosphate tag" 
+                },
+                correctAnswer: "B",
+                rationale: "Soluble ER-resident proteins contain a specific four-amino-acid retrieval signal at their C-terminus, commonly Lys-Asp-Glu-Leu (KDEL). This sequence is recognized by the KDEL receptor in the Golgi, which captures the protein and returns it to the ER in COPI-coated vesicles.",
+                source: "'Soluble proteins such as BiP contain a “KDEL” retrieval sequence.' (Endomembranes, Page 21)"
+            },
+            {
+                learningObjective: "LO 2 (Endomembranes): Describe how protein conformation is monitored in the endoplasmic reticulum and the fate of mis-folded proteins.",
+                question: "A patient with the most common form of cystic fibrosis has a mutation (F508del) in the CFTR gene. Although the mutant protein retains some function, it fails to reach the plasma membrane. What is the primary reason for this trafficking defect?",
+                options: { 
+                    A: "The protein is not correctly glycosylated in the Golgi.", 
+                    B: "The protein is improperly folded and is retained and degraded by the ER quality control system.", 
+                    C: "The protein lacks the signal sequence for ER import.", 
+                    D: "The protein is degraded in the lysosome immediately after synthesis." 
+                },
+                correctAnswer: "B",
+                rationale: "The F508del mutation causes the CFTR protein to misfold. The ER has a stringent quality control system that recognizes and retains misfolded proteins. Because the F508del-CFTR protein cannot fold correctly, it is identified by chaperones, booted from the ER back into the cytosol, and degraded by the proteasome. Thus, it never reaches the plasma membrane.",
+                source: "'The most common CF mutation (86%) is F508del... This version is not able to properly fold... because of the folding defect it never reaches the plasma membrane.' (Endomembranes, Page 14)"
+            },
+            {
+                learningObjective: "LO 2 (Endomembranes): Describe how protein conformation is monitored in the endoplasmic reticulum and the fate of mis-folded proteins.",
+                question: "When a large number of unfolded proteins accumulate in the ER, a signaling pathway is activated to alleviate this stress. This pathway slows down general protein synthesis and increases the transcription of genes encoding chaperones. What is this pathway called?",
+                options: { 
+                    A: "The apoptotic pathway", 
+                    B: "The unfolded protein response (UPR)", 
+                    C: "The secretory pathway", 
+                    D: "The endocytic pathway" 
+                },
+                correctAnswer: "B",
+                rationale: "The unfolded protein response (UPR) is a cellular stress response activated by an accumulation of unfolded or misfolded proteins in the ER lumen. It aims to restore homeostasis by reducing the protein load and increasing the folding capacity of the ER. If the stress is too severe or prolonged, the UPR will instead trigger apoptosis.",
+                source: "'The cell turns on a signaling pathway called the Unfolded Protein Response (UPR). Slows down general protein translation; increases the transcription and translation of genes related to protein folding (chaperones).' (Endomembranes, Page 15)"
+            },
+            {
+                learningObjective: "LO 2 (Endomembranes): Describe how protein conformation is monitored in the endoplasmic reticulum and the fate of mis-folded proteins.",
+                question: "A misfolded protein in the ER is targeted for degradation. The process involves retro-translocation of the protein back into the cytosol, where it is tagged with a specific marker before being destroyed. What is this molecular tag?",
+                options: { 
+                    A: "Mannose-6-phosphate", 
+                    B: "A SUMO protein", 
+                    C: "A polyubiquitin chain", 
+                    D: "A phosphate group" 
+                },
+                correctAnswer: "C",
+                rationale: "Proteins that fail to fold correctly in the ER are exported back to the cytosol. Here, an E3 ubiquitin ligase complex attaches a chain of ubiquitin molecules to the misfolded protein. This polyubiquitin chain is the signal that targets the protein for degradation by the proteasome.",
+                source: "'A protein translator associated with an ATPase and a ubiquitin ligase pulls the protein into the cytosol. Poly-ubiquitin chain is recognized by the proteasome; unfolded protein is degraded.' (Endomembranes, Page 12)"
+            },
+            {
+                learningObjective: "LO 3 (Endomembranes): Describe the mechanism by which membrane fusion events are mediated.",
+                question: "The specific fusion of a transport vesicle with its target membrane, such as a synaptic vesicle with the presynaptic plasma membrane, is a critical step in vesicular transport. This fusion is directly mediated by the interaction of which two families of proteins?",
+                options: { 
+                    A: "Clathrin and COPII proteins", 
+                    B: "Rab proteins and Rab effectors", 
+                    C: "v-SNAREs and t-SNAREs", 
+                    D: "Adaptor proteins and cargo receptors" 
+                },
+                correctAnswer: "C",
+                rationale: "While Rab proteins and their effectors mediate the initial tethering and docking, the actual fusion of the two lipid bilayers is driven by the pairing of SNARE proteins. v-SNAREs on the vesicle membrane interact with complementary t-SNAREs on the target membrane, forming a stable four-helix bundle (trans-SNARE complex) that pulls the membranes into close proximity and catalyzes their fusion.",
+                source: "'Additional specificity is provided by the v and t SNAREs. v SNARES = vesicle; t SNARES = target organelle.' (The diagram shows SNAREs mediating the final fusion event). (Endomembranes, Page 19)"
+            },
+            {
+                learningObjective: "LO 3 (Endomembranes): Describe the mechanism by which membrane fusion events are mediated.",
+                question: "Botulinum toxin is a potent neurotoxin that causes flaccid paralysis by blocking neurotransmitter release at the neuromuscular junction. The toxin achieves this effect by functioning as a protease that cleaves which specific proteins?",
+                options: { 
+                    A: "Rab GTPases", 
+                    B: "SNARE proteins", 
+                    C: "Clathrin heavy chain", 
+                    D: "Acetylcholine receptors" 
+                },
+                correctAnswer: "B",
+                rationale: "The release of neurotransmitters requires the fusion of synaptic vesicles with the presynaptic membrane, a process mediated by SNARE proteins (like synaptobrevin, syntaxin, and SNAP-25). Botulinum toxin enters motor neurons and specifically cleaves these SNARE proteins, preventing the formation of the fusion complex and thereby blocking acetylcholine release.",
+                source: "'Toxin cleaves certain SNARE proteins which are abundant at the synapse. Blocks neurotransmitter release.' (Endomembranes, Page 31)"
+            },
+            {
+                learningObjective: "LO 3 (Endomembranes): Describe the mechanism by which membrane fusion events are mediated.",
+                question: "The initial recognition and tethering of a transport vesicle to its correct target membrane is a highly specific process that precedes SNARE-mediated fusion. This specificity is primarily provided by the interaction between which two components?",
+                options: { 
+                    A: "A specific Rab-GTP on the vesicle and a Rab effector on the target membrane", 
+                    B: "A v-SNARE on the vesicle and a t-SNARE on the target membrane", 
+                    C: "A COPII coat on the vesicle and a receptor on the target membrane", 
+                    D: "A clathrin coat on the vesicle and a receptor on the target membrane" 
+                },
+                correctAnswer: "A",
+                rationale: "There are many different Rab proteins, each localized to a specific type of membrane compartment. In its active, GTP-bound state, a Rab protein on the surface of a vesicle binds to a specific Rab effector (tethering protein) on the correct target membrane. This interaction provides the initial specificity and physically tethers the vesicle, bringing it close enough for SNAREs to engage.",
+                source: "'A specific Rab protein makes contact with a Rab effector protein on the target membrane. Provides specificity for docking.' (Endomembranes, Page 19)"
+            },
+            {
+                learningObjective: "LO 4 (Endomembranes): Name the two secretory pathways that convey cargo from the Golgi to the plasma membrane, indicating their different functions and different mechanisms.",
+                question: "A fibroblast cell is actively synthesizing and secreting collagen into the extracellular matrix. This process occurs continuously and does not require an external signal to trigger the release of the vesicles containing collagen. This is an example of which secretory pathway?",
+                options: { 
+                    A: "Regulated secretion", 
+                    B: "Constitutive secretion", 
+                    C: "Endocytosis", 
+                    D: "Phagocytosis" 
+                },
+                correctAnswer: "B",
+                rationale: "The constitutive secretory pathway is the default pathway that operates in all eukaryotic cells. It involves the continuous transport of proteins and lipids from the Golgi to the plasma membrane, where they are released (secreted) or incorporated into the membrane. This pathway does not require a specific signal for vesicle fusion.",
+                source: "'Constitutive secretion is the default = no specific sorting signal. For example, collagen synthesized by fibroblasts.' (Endomembranes, Page 24)"
+            },
+            {
+                learningObjective: "LO 4 (Endomembranes): Name the two secretory pathways that convey cargo from the Golgi to the plasma membrane, indicating their different functions and different mechanisms.",
+                question: "In a pancreatic β-cell, insulin is stored in dense-core secretory vesicles. The release of insulin into the bloodstream is triggered by an increase in blood glucose levels. This 'on-demand' release is characteristic of which pathway?",
+                options: { 
+                    A: "Regulated secretion", 
+                    B: "Constitutive secretion", 
+                    C: "Transcytosis", 
+                    D: "Autophagy" 
+                },
+                correctAnswer: "A",
+                rationale: "The regulated secretory pathway is used by specialized cells to secrete products like hormones, neurotransmitters, or digestive enzymes only when needed. The products are packaged into secretory vesicles and stored in the cytoplasm until an external signal (like a hormone or a change in ion concentration) triggers the vesicles to fuse with the plasma membrane and release their contents.",
+                source: "'signal such as hormone or neurotransmitter' triggers the 'REGULATED SECRETORY PATHWAY'. (Endomembranes, Page 24)"
+            },
+            {
+                learningObjective: "LO 4 (Endomembranes): Name the two secretory pathways that convey cargo from the Golgi to the plasma membrane, indicating their different functions and different mechanisms.",
+                question: "A mast cell degranulates in response to an allergen, rapidly releasing histamine-containing granules. This is a classic example of regulated exocytosis. Which of the following is a key feature that distinguishes this process from constitutive secretion?",
+                options: { 
+                    A: "It uses COPII-coated vesicles.", 
+                    B: "It does not require SNARE proteins for fusion.", 
+                    C: "Vesicles fuse with the plasma membrane only in response to a specific signal.", 
+                    D: "It is the default pathway for all proteins leaving the Golgi." 
+                },
+                correctAnswer: "C",
+                rationale: "The defining characteristic of the regulated secretory pathway is that the final step, the fusion of the secretory vesicle with the plasma membrane, is blocked until the cell receives an appropriate extracellular signal. In contrast, vesicles in the constitutive pathway fuse with the plasma membrane as soon as they arrive.",
+                source: "'Synaptic vessels, mast cell granules are regulated.' (Endomembranes, Page 24)"
+            },
+            {
+                learningObjective: "LO 5 (Endomembranes): Explain how cargo is transported into the cell and between organelles, the role of coat proteins in this process, and diseases that occur when this process is disrupted.",
+                question: "A patient is diagnosed with I-cell disease (mucolipidosis II). Their fibroblasts are observed to be secreting large amounts of lysosomal enzymes into the extracellular medium instead of delivering them to the lysosome. This disease is caused by a defect in the enzyme that adds which specific tag to the lysosomal hydrolases in the Golgi?",
+                options: { 
+                    A: "A polyubiquitin chain", 
+                    B: "A KDEL sequence", 
+                    C: "A mannose-6-phosphate (M6P) group", 
+                    D: "A GPI anchor" 
+                },
+                correctAnswer: "C",
+                rationale: "The targeting of acid hydrolases to the lysosome depends on the mannose-6-phosphate (M6P) tag. This tag is added in the Golgi by the enzyme GlcNAc phosphotransferase. In I-cell disease, this enzyme is defective. Without the M6P tag, the lysosomal enzymes are not recognized by the M6P receptor and are instead missorted into the constitutive secretory pathway and secreted from the cell.",
+                source: "'The targeting signal is a sugar modification; mannose 6-phosphate (M6P). The enzyme responsible for this modification is N-acetylglucosamine-1 phosophotransferase... Mutations in this enzyme are associated with lysosomal disorders (I cell disease).' (Endomembranes, Page 22)"
+            },
+            {
+                learningObjective: "LO 5 (Endomembranes): Explain how cargo is transported into the cell and between organelles, the role of coat proteins in this process, and diseases that occur when this process is disrupted.",
+                question: "The endocytosis of LDL cholesterol particles from the plasma is mediated by the LDL receptor. This process begins with the formation of a vesicle at the plasma membrane. The cytoplasmic surface of this vesicle is covered by a specific protein that forms a basket-like lattice. What is this coat protein?",
+                options: { 
+                    A: "COPI", 
+                    B: "COPII", 
+                    C: "Clathrin", 
+                    D: "Caveolin" 
+                },
+                correctAnswer: "C",
+                rationale: "Receptor-mediated endocytosis, such as the uptake of LDL, utilizes clathrin-coated pits. The LDL receptor, upon binding LDL, clusters in these pits. Adaptor proteins link the receptor's cytoplasmic tail to clathrin, which then assembles into a polyhedral cage (a 'triskelion' basket) that helps deform the membrane and pinch off to form a clathrin-coated vesicle.",
+                source: "'LDL is recognized by LDL receptors on the cell surface; recruits adaptor proteins, Clathrin, bud formation, etc.' (Endomembranes, Page 29)"
+            },
+            {
+                learningObjective: "LO 5 (Endomembranes): Explain how cargo is transported into the cell and between organelles, the role of coat proteins in this process, and diseases that occur when this process is disrupted.",
+                question: "A researcher is studying the budding of transport vesicles from the endoplasmic reticulum (ER) that are destined for the Golgi apparatus. These vesicles are responsible for anterograde transport. Which type of protein coat is involved in the formation of these vesicles?",
+                options: { 
+                    A: "Clathrin", 
+                    B: "COPI", 
+                    C: "COPII", 
+                    D: "Reticulon" 
+                },
+                correctAnswer: "C",
+                rationale: "Vesicular transport from the ER to the Golgi is mediated by vesicles coated with COPII proteins. The COPII coat assembles on the ER membrane at specialized 'exit sites' and is responsible for selecting cargo and physically shaping the membrane into a budding vesicle.",
+                source: "'secretory protein' is shown budding from the ER in a 'COPII coat' as part of the 'FORWARD PATHWAY'. (Endomembranes, Page 21)"
+            },
+            // Cell Cycle Regulation, Cell Death & Tissue Homeostasis Questions
+            {
+                learningObjective: "LO 1 (Cell Cycle Regulation): Describe how growth factors signal to Rb and how Rb regulates the Restriction point of the cell cycle (external input into the intrinsic machinery of the cell cycle).",
+                question: "A quiescent fibroblast in the G0 phase is stimulated with a growth factor. This initiates a signal transduction cascade that leads to the synthesis of Cyclin D. The Cyclin D/CDK4/6 complex then phosphorylates a key protein, allowing the cell to pass the restriction point and enter S phase. What is this key protein target?",
+                options: { 
+                    A: "p53", 
+                    B: "E2F", 
+                    C: "Retinoblastoma protein (Rb)", 
+                    D: "p21" 
+                },
+                correctAnswer: "C",
+                rationale: "The retinoblastoma protein (Rb) is the gatekeeper of the G1/S restriction point. In its active, unphosphorylated state, Rb binds to and sequesters the E2F transcription factor, preventing the expression of genes needed for S phase. Growth factor signaling leads to the activation of Cyclin D/CDK4/6, which phosphorylates (inactivates) Rb. This releases E2F, allowing it to activate transcription and drive the cell into S phase.",
+                source: "'Signal Transduction Cascade... activates (phosphorylates) CDK/cyclin that phosphorylates and inactivates RB.' (Cell Cycle Regulation, Page 7)"
+            },
+            {
+                learningObjective: "LO 1 (Cell Cycle Regulation): Describe how growth factors signal to Rb and how Rb regulates the Restriction point of the cell cycle (external input into the intrinsic machinery of the cell cycle).",
+                question: "A patient is diagnosed with retinoblastoma, a tumor of the eye. This cancer is caused by the loss of function of the Rb protein. How does the loss of active Rb protein lead to uncontrolled cell proliferation?",
+                options: { 
+                    A: "It causes constitutive activation of growth factor receptors.", 
+                    B: "It leads to the continuous sequestration and inactivation of E2F.", 
+                    C: "It results in the constitutive activation of the E2F transcription factor.", 
+                    D: "It prevents the cell from entering mitosis." 
+                },
+                correctAnswer: "C",
+                rationale: "The primary tumor suppressor function of Rb is to act as a 'brake' on the cell cycle by inhibiting the E2F transcription factor. When both alleles of the RB1 gene are lost or inactivated, there is no functional Rb protein to sequester E2F. E2F is therefore always active, continuously driving the transcription of S-phase genes and leading to uncontrolled cell proliferation.",
+                source: "'active (unphosphorylated) Rb protein blocks cell growth by sequestering the E2F transcription factor(s).' (Cell Cycle Regulation, Page 8)"
+            },
+            {
+                learningObjective: "LO 1 (Cell Cycle Regulation): Describe how growth factors signal to Rb and how Rb regulates the Restriction point of the cell cycle (external input into the intrinsic machinery of the cell cycle).",
+                question: "Certain types of human papillomavirus (HPV) can cause cancer by producing a protein called E7. The E7 oncoprotein promotes cell cycle progression by binding to and inactivating a host tumor suppressor protein. Which protein is the target of HPV E7?",
+                options: { 
+                    A: "p53", 
+                    B: "p21", 
+                    C: "Cyclin D", 
+                    D: "Rb" 
+                },
+                correctAnswer: "D",
+                rationale: "The HPV E7 protein functionally inactivates the Rb tumor suppressor. By binding to Rb, E7 prevents Rb from sequestering E2F. This leads to the inappropriate activation of E2F-responsive genes and pushes the cell through the restriction point, contributing to uncontrolled proliferation.",
+                source: "This is a classic example of viral oncogenesis targeting the Rb pathway. The core concept is that inactivating Rb (either by mutation, phosphorylation, or a viral protein) is a common mechanism for disrupting cell cycle control. (Cell Cycle Regulation, Page 10)"
+            },
+            {
+                learningObjective: "LO 2 (Cell Cycle Regulation): Understand the principles of flow cytometry.",
+                question: "A population of asynchronously growing cells is fixed, stained with propidium iodide, and analyzed by flow cytometry. The resulting histogram shows two major peaks, labeled A and B. Peak A has a relative DNA content of 2n, and Peak B has a relative DNA content of 4n. Cells in which phase of the cell cycle would be found in Peak A?",
+                options: { 
+                    A: "S phase", 
+                    B: "G2 phase", 
+                    C: "M phase", 
+                    D: "G1 phase" 
+                },
+                correctAnswer: "D",
+                rationale: "Propidium iodide stains DNA stoichiometrically, so the fluorescence intensity is proportional to the amount of DNA. Cells in the G1 phase have not yet replicated their DNA and have a 2n DNA content. Cells in G2 and M phases have completed DNA replication and have a 4n DNA content. Cells in S phase are actively replicating their DNA and will have a DNA content between 2n and 4n.",
+                source: "'G1 – 46 [# of chromosomes] 2n [DNA content]' The diagram on page 16 shows the 2n peak labeled 'A' corresponding to G1. (Cell Cycle Regulation, Pages 14 & 16)"
+            },
+            {
+                learningObjective: "LO 2 (Cell Cycle Regulation): Understand the principles of flow cytometry.",
+                question: "A researcher treats a culture of cancer cells with Taxol, a chemotherapeutic agent that stabilizes microtubules and prevents their depolymerization. After 24 hours of treatment, the cells are analyzed by flow cytometry. What change would be expected in the cell cycle profile?",
+                options: { 
+                    A: "An accumulation of cells in the G1 phase.", 
+                    B: "An accumulation of cells in the S phase.", 
+                    C: "An accumulation of cells in the G2/M phase.", 
+                    D: "A decrease in the total number of cells in all phases." 
+                },
+                correctAnswer: "C",
+                rationale: "Taxol disrupts the mitotic spindle by stabilizing microtubules. This activates the spindle assembly checkpoint and prevents cells from completing mitosis. The cells will therefore arrest in the M phase of the cell cycle. Since M-phase cells and G2-phase cells both have a 4n DNA content, this arrest will appear as an increase in the G2/M peak on a flow cytometry histogram.",
+                source: "'mitotic spindle is paralyzed by taxol treatment and cells are arrested in some stage of mitosis' (Cell Cycle Regulation, Page 18)"
+            },
+            {
+                learningObjective: "LO 2 (Cell Cycle Regulation): Understand the principles of flow cytometry.",
+                question: "Following treatment with an apoptosis-inducing drug, a flow cytometry histogram of a cancer cell population shows the appearance of a new peak to the left of the G1 peak. This 'sub-G1' peak represents which of the following?",
+                options: { 
+                    A: "Cells that are arrested in the G0 phase.", 
+                    B: "Cells that have undergone endoreduplication.", 
+                    C: "Apoptotic cells with fragmented DNA.", 
+                    D: "Cells that are resistant to the drug." 
+                },
+                correctAnswer: "C",
+                rationale: "During apoptosis, caspases activate endonucleases that cleave the chromosomal DNA into small fragments. These small DNA fragments can then leak out of the cell. When these cells are stained with a DNA dye like propidium iodide, they will have a fractional DNA content that is less than the 2n content of G1 cells, causing them to appear in a 'sub-G1' peak on the histogram.",
+                source: "'Sub G1 peak – cell population dying by apoptosis with loss of DNA because it has been degraded during apoptosis and is lost from the cell' (Cell Cycle Regulation, Page 19)"
+            },
+            {
+                learningObjective: "LO 3 (Cell Cycle Regulation): Describe how p53 regulates the G1 check point and specifically identify how p53 induces growth arrest versus apoptosis.",
+                question: "In response to DNA damage, the p53 tumor suppressor protein is stabilized and activated. To induce a temporary growth arrest and allow time for DNA repair, p53 acts as a transcription factor to upregulate the expression of which key target gene?",
+                options: { 
+                    A: "Bax", 
+                    B: "Cyclin D", 
+                    C: "p21 (a CKI)", 
+                    D: "Rb" 
+                },
+                correctAnswer: "C",
+                rationale: "The cytostatic (growth arrest) function of p53 is primarily mediated by its ability to induce the transcription of the p21 gene. The p21 protein is a cyclin-dependent kinase inhibitor (CKI) that binds to and inhibits G1/S-Cdk and S-Cdk complexes (e.g., Cyclin E/CDK2). This inhibition prevents the cell from progressing into S phase, thereby halting the cell cycle.",
+                source: "'Cytostatic mechanism p53 transcriptionally upregulates transcription of p21 (CKI)' (Cell Cycle Regulation, Page 25)"
+            },
+            {
+                learningObjective: "LO 3 (Cell Cycle Regulation): Describe how p53 regulates the G1 check point and specifically identify how p53 induces growth arrest versus apoptosis.",
+                question: "If DNA damage is severe and cannot be repaired, p53 switches from inducing growth arrest to inducing apoptosis. This cytotoxic function is primarily mediated by p53 upregulating the transcription of which pro-apoptotic protein?",
+                options: { 
+                    A: "Bcl2", 
+                    B: "p21", 
+                    C: "Mdm2", 
+                    D: "Bax" 
+                },
+                correctAnswer: "D",
+                rationale: "When DNA damage is irreparable, p53 activates the intrinsic pathway of apoptosis. It does this by increasing the transcription of pro-apoptotic genes, most notably Bax. Bax is a member of the Bcl2 family that, when activated, inserts into the mitochondrial outer membrane, leading to the release of cytochrome c and the activation of the caspase cascade.",
+                source: "'Cytotoxic action of p53 (intrinsic apoptotic pathway) Bax induction as a result of high-level DNA damage' (Cell Cycle Regulation, Page 26)"
+            },
+            {
+                learningObjective: "LO 3 (Cell Cycle Regulation): Describe how p53 regulates the G1 check point and specifically identify how p53 induces growth arrest versus apoptosis.",
+                question: "In a healthy, unstressed cell, the levels of p53 protein are kept very low. This is because p53 is constantly being translated but is also rapidly targeted for degradation by which cellular machinery?",
+                options: { 
+                    A: "The lysosome", 
+                    B: "The spliceosome", 
+                    C: "The proteasome", 
+                    D: "The ribosome" 
+                },
+                correctAnswer: "C",
+                rationale: "Under normal conditions, p53 is kept at low levels through continuous degradation. The E3 ubiquitin ligase Mdm2 binds to p53 and targets it for ubiquitination. The polyubiquitinated p53 is then recognized and degraded by the proteasome. DNA damage leads to post-translational modifications of p53 that disrupt its interaction with Mdm2, causing p53 to stabilize and accumulate.",
+                source: "'It is typically translated, but not stable and degraded in the proteasome.' (Cell Cycle Regulation, Page 23)"
+            },
+            {
+                learningObjective: "LO 4 (Cell Cycle Regulation): Explain the intrinsic pathway of apoptosis and identify the role of mitochondria, caspases, and Bcl2 (Bax, Bak, and Bid) in this process...",
+                question: "The central executioners of apoptosis are a family of proteases that, once activated, cleave numerous cellular substrates, leading to the dismantling of the cell. What is this family of proteases called?",
+                options: { 
+                    A: "Kinases", 
+                    B: "Phosphatases", 
+                    C: "Caspases", 
+                    D: "Lipases" 
+                },
+                correctAnswer: "C",
+                rationale: "Caspases (cysteine-aspartate proteases) are the core machinery of apoptosis. They exist as inactive pro-enzymes (procaspases) that are activated by cleavage. Initiator caspases (like caspase-9) are activated first, and they in turn cleave and activate executioner caspases (like caspase-3), which then carry out the widespread proteolysis that defines apoptosis.",
+                source: "'What are caspases? Pro-enzymes in cells (pro-caspases), undergo cleavage for activation. Initiator and executioner caspases.' (Cell Cycle Regulation, Page 28)"
+            },
+            {
+                learningObjective: "LO 4 (Cell Cycle Regulation): Explain the intrinsic pathway of apoptosis and identify the role of mitochondria, caspases, and Bcl2 (Bax, Bak, and Bid) in this process...",
+                question: "The intrinsic pathway of apoptosis is initiated by the release of a specific protein from the mitochondrial intermembrane space into the cytosol. This protein then binds to Apaf-1, leading to the assembly of the apoptosome and the activation of caspase-9. What is this mitochondrial protein?",
+                options: { 
+                    A: "Smac/DIABLO", 
+                    B: "Cytochrome c", 
+                    C: "ATP synthase", 
+                    D: "Bcl2" 
+                },
+                correctAnswer: "B",
+                rationale: "Mitochondria play a central role in the intrinsic apoptotic pathway. In response to pro-apoptotic signals (like p53-induced Bax expression), the mitochondrial outer membrane becomes permeabilized, leading to the release of cytochrome c. In the cytosol, cytochrome c binds to the adaptor protein Apaf-1, triggering the formation of the apoptosome, which serves as an activation platform for the initiator caspase-9.",
+                source: "'Bax inserts into mitochondrial membrane and causes mitochondria to release cytochrome c which activates the initiator caspase-9 protein.' (Cell Cycle Regulation, Page 26)"
+            },
+            {
+                learningObjective: "LO 4 (Cell Cycle Regulation): Explain the intrinsic pathway of apoptosis and identify the role of mitochondria, caspases, and Bcl2 (Bax, Bak, and Bid) in this process...",
+                question: "A cancer cell line is found to be highly resistant to chemotherapy-induced apoptosis. This resistance is due to the overexpression of a protein that resides on the mitochondrial outer membrane and functions by binding to and inhibiting pro-apoptotic proteins like Bax and Bak. Which of the following proteins is most likely overexpressed?",
+                options: { 
+                    A: "Bid", 
+                    B: "p53", 
+                    C: "Bcl2", 
+                    D: "Caspase-9" 
+                },
+                correctAnswer: "C",
+                rationale: "The Bcl2 family of proteins contains both pro-apoptotic (e.g., Bax, Bak) and anti-apoptotic (e.g., Bcl2, Bcl-XL) members. The anti-apoptotic proteins block apoptosis by sequestering the pro-apoptotic members, preventing them from permeabilizing the mitochondrial membrane. Overexpression of Bcl2 is a common mechanism by which cancer cells evade apoptosis and gain resistance to therapy.",
+                source: "'Bcl2 overexpression blocks apoptosis. Results in resistance to apoptosis (via the intrinsic pathway).' (Cell Cycle Regulation, Page 49)"
+            },
+            {
+                learningObjective: "LO 5 (Cell Cycle Regulation): Briefly describe the components and function of the extrinsic pathway of apoptosis and how it differs from the intrinsic pathway.",
+                question: "A cytotoxic T lymphocyte identifies a virus-infected cell and induces it to undergo apoptosis. The T cell does this by expressing a specific ligand on its surface that binds to a 'death receptor' on the target cell. Which ligand-receptor pair is a primary mediator of this extrinsic apoptotic pathway?",
+                options: { 
+                    A: "Insulin and the Insulin Receptor", 
+                    B: "EGF and the EGF Receptor", 
+                    C: "Fas ligand (FasL) and the Fas receptor (CD95)", 
+                    D: "Acetylcholine and the Nicotinic Receptor" 
+                },
+                correctAnswer: "C",
+                rationale: "The extrinsic pathway is initiated by extracellular signals. A key example is the Fas/FasL system used by immune cells. Cytotoxic T cells express Fas ligand (FasL) on their surface. When they recognize a target cell (e.g., a virus-infected cell or tumor cell), FasL binds to the Fas death receptor on the target, causing the receptor to trimerize and initiate a caspase cascade.",
+                source: "'The Fas/CD95/Apo-1 system in health and disease... Cytotoxic T cell carrying the Fas ligand on its surface... Target cell killed through apoptosis upon cell-cell binding.' (Cell Cycle Regulation, Page 54)"
+            },
+            {
+                learningObjective: "LO 5 (Cell Cycle Regulation): Briefly describe the components and function of the extrinsic pathway of apoptosis and how it differs from the intrinsic pathway.",
+                question: "Upon ligand binding, death receptors trimerize and recruit adaptor proteins to their intracellular death domains, forming a Death-Inducing Signaling Complex (DISC). A key function of the DISC is to recruit and activate a specific initiator caspase. Which initiator caspase is activated in the extrinsic pathway?",
+                options: { 
+                    A: "Caspase-3", 
+                    B: "Caspase-6", 
+                    C: "Caspase-9", 
+                    D: "Caspase-8" 
+                },
+                correctAnswer: "D",
+                rationale: "The extrinsic and intrinsic pathways utilize different initiator caspases. The intrinsic pathway apoptosome activates caspase-9. The extrinsic pathway DISC recruits and activates procaspase-8 (or in some cases, caspase-10). Once activated, caspase-8 can then directly cleave and activate executioner caspases like caspase-3.",
+                source: "'Initiator caspase 8 (or 10), not caspase 9 as in the Intrinsic Pathway.' (Cell Cycle Regulation, Page 53)"
+            },
+            {
+                learningObjective: "LO 5 (Cell Cycle Regulation): Briefly describe the components and function of the extrinsic pathway of apoptosis and how it differs from the intrinsic pathway.",
+                question: "In some cell types, the extrinsic and intrinsic apoptotic pathways are linked. Activated caspase-8 from the extrinsic pathway can cleave a specific BH3-only protein, which then translocates to the mitochondria to engage the intrinsic pathway. What is this BH3-only protein that provides the crosstalk between the two pathways?",
+                options: { 
+                    A: "Bax", 
+                    B: "Bak", 
+                    C: "Bcl2", 
+                    D: "Bid" 
+                },
+                correctAnswer: "D",
+                rationale: "Bid is a BH3-only protein that acts as a sentinel for the extrinsic pathway. When cleaved by active caspase-8, it forms truncated Bid (tBid). tBid then moves to the mitochondria, where it activates the pro-apoptotic effector proteins Bax and Bak, leading to cytochrome c release and amplification of the death signal through the intrinsic pathway.",
+                source: "'Cross-talk between the two pathways of apoptosis as follows: Once caspase 8 is activated, it can enzymatically clip Bid to truncated Bid (tBid) which causes mitochondrial membrane damage...' (Cell Cycle Regulation, Page 53)"
+            },
+            // Regulation of Gene Expression Questions
+            {
+                learningObjective: "LO 1 (Regulation of Gene Expression): Define “gene expression” and explain constitutive, facultative, regulated, temporal, and spatial regulation of gene expression. Define trans-acting and cis-acting DNA regulatory elements and describe how they function to regulate gene expression.",
+                question: "The promoter of a gene is a specific DNA sequence that determines where transcription begins. A transcription factor protein binds to this promoter sequence to regulate the gene's expression. In this scenario, the promoter is an example of what type of regulatory element?",
+                options: { 
+                    A: "A trans-acting factor", 
+                    B: "A cis-acting element", 
+                    C: "A coactivator", 
+                    D: "A corepressor" 
+                },
+                correctAnswer: "B",
+                rationale: "Cis-acting elements are DNA (or RNA) sequences that are part of the same molecule as the gene they regulate. They function as binding sites for regulatory molecules. Promoters, enhancers, and operators are all examples of cis-acting elements. Trans-acting factors are the diffusible molecules (usually proteins) that bind to these cis-elements.",
+                source: "'Cis-acting: Nucleotide sequence that affects the activity of adjacent sequences. (This DNA sequence does not encode for a protein.)' (Regulation of Gene Expression, Page 4)"
+            },
+            {
+                learningObjective: "LO 1 (Regulation of Gene Expression): Define “gene expression” and explain constitutive, facultative, regulated, temporal, and spatial regulation of gene expression. Define trans-acting and cis-acting DNA regulatory elements and describe how they function to regulate gene expression.",
+                question: "The gene for phosphofructokinase, a key enzyme in glycolysis, is transcribed at a relatively constant level in almost all cells of the body. This type of gene expression is best described as:",
+                options: { 
+                    A: "Regulated", 
+                    B: "Facultative", 
+                    C: "Constitutive", 
+                    D: "Spatially regulated" 
+                },
+                correctAnswer: "C",
+                rationale: "Constitutive or 'housekeeping' genes are those that are essential for the basic maintenance and function of a cell, such as the enzymes of glycolysis. They are typically expressed in all cells at all times under normal conditions, without requiring specific induction or repression.",
+                source: "'Constitutive (housekeeping) genes - genes that are expressed all the time (e.g., genes involved in glycolysis).' (Regulation of Gene Expression, Page 3)"
+            },
+            {
+                learningObjective: "LO 1 (Regulation of Gene Expression): Define “gene expression” and explain constitutive, facultative, regulated, temporal, and spatial regulation of gene expression. Define trans-acting and cis-acting DNA regulatory elements and describe how they function to regulate gene expression.",
+                question: "A repressor protein is encoded by a regulatory gene located far away from the operon it controls. The repressor protein diffuses through the cytoplasm to bind to the operator site of the operon. The repressor protein itself is an example of what type of regulatory element?",
+                options: { 
+                    A: "A cis-acting element", 
+                    B: "A promoter", 
+                    C: "An operator", 
+                    D: "A trans-acting factor" 
+                },
+                correctAnswer: "D",
+                rationale: "Trans-acting factors are diffusible products, typically proteins, that are encoded by a gene separate from the one they regulate. They can move through the cell ('in trans') to bind to their target cis-acting elements. Transcription factors, activators, and repressors are all examples of trans-acting factors.",
+                source: "'Trans-acting: Diffusible product (protein/ncRNA) that affects the activity of DNA. e.g. the repressor protein binding to an operator.' (Regulation of Gene Expression, Page 4)"
+            },
+            {
+                learningObjective: "LO 2 (Regulation of Gene Expression): Draw the structure of a regulated gene complex in prokaryotes and explain concepts of prokaryotic gene regulation using lac operon as an example.",
+                question: "In the absence of glucose and the presence of lactose, the E. coli lac operon is maximally expressed. This requires the binding of two different proteins to the DNA. One is the RNA polymerase. The other is a complex of cAMP and which activator protein?",
+                options: { 
+                    A: "Lac repressor", 
+                    B: "Sigma factor", 
+                    C: "cAMP receptor protein (CRP)", 
+                    D: "Tryptophan" 
+                },
+                correctAnswer: "C",
+                rationale: "The lac operon is subject to both negative and positive control. When lactose is present, the Lac repressor is inactivated. When glucose is absent, cAMP levels rise. cAMP binds to the cAMP receptor protein (CRP), also known as catabolite activator protein (CAP). The cAMP-CRP complex then binds to a site near the promoter and acts as an activator, greatly stimulating the binding of RNA polymerase and leading to a high level of transcription.",
+                source: "'In the absence of glucose but presence of lactose in the growth medium, the transcription of lac operon is stimulated to the maximum extent by CRP...' (Regulation of Gene Expression, Page 10)"
+            },
+            {
+                learningObjective: "LO 2 (Regulation of Gene Expression): Draw the structure of a regulated gene complex in prokaryotes and explain concepts of prokaryotic gene regulation using lac operon as an example.",
+                question: "A mutant strain of E. coli is discovered that cannot metabolize lactose. The mutation is found to be in the operator sequence of the lac operon, preventing the Lac repressor protein from binding to it, even in the absence of lactose. How would this mutation affect the expression of the lac operon structural genes (lacZ, lacY, lacA)?",
+                options: { 
+                    A: "The genes would be permanently repressed.", 
+                    B: "The genes would be expressed constitutively.", 
+                    C: "The genes would only be expressed in the presence of glucose.", 
+                    D: "The genes would not be transcribed under any condition." 
+                },
+                correctAnswer: "B",
+                rationale: "The operator is the binding site for the Lac repressor. The repressor's function is to turn the operon OFF. If the operator sequence is mutated so that the repressor can no longer bind, then the primary mechanism of repression is lost. RNA polymerase will be able to bind to the promoter and transcribe the structural genes continuously, regardless of whether lactose is present or not.",
+                source: "This question requires understanding the function of the operator as the repressor's binding site, as shown in the 'Anatomy of a regulated gene complex' diagram. (Regulation of Gene Expression, Page 8)"
+            },
+            {
+                learningObjective: "LO 2 (Regulation of Gene Expression): Draw the structure of a regulated gene complex in prokaryotes and explain concepts of prokaryotic gene regulation using lac operon as an example.",
+                question: "The structural genes of the lac operon (lacZ, lacY, and lacA) are transcribed together from a single promoter into one long mRNA molecule that contains coding sequences for all three proteins. This type of mRNA is known as:",
+                options: { 
+                    A: "Monocistronic", 
+                    B: "Polycistronic", 
+                    C: "Pre-mRNA", 
+                    D: "snRNA" 
+                },
+                correctAnswer: "B",
+                rationale: "A key feature of prokaryotic operons is that the functionally related structural genes are transcribed as a single unit, producing a polycistronic mRNA. This mRNA is then translated to produce multiple distinct proteins. This allows for the coordinated regulation and expression of all the genes in the pathway.",
+                source: "'Structural genes of an operon are transcribed as a single polycistronic mRNA.' (Regulation of Gene Expression, Page 8)"
+            },
+            {
+                learningObjective: "LO 3 (Regulation of Gene Expression): Draw the structure of a prototypical eukaryotic gene and identify the multiple levels at which the eukaryotic genes may be regulated.",
+                question: "Unlike prokaryotes, where gene regulation occurs almost exclusively at the level of transcription initiation, eukaryotes have multiple levels of regulation. Which of the following is a level of gene regulation that is unique to eukaryotes?",
+                options: { 
+                    A: "Binding of a repressor protein to an operator.", 
+                    B: "Activation of transcription by an activator protein.", 
+                    C: "Regulation at the level of chromatin accessibility (genome level).", 
+                    D: "Transcription of multiple genes as a single polycistronic mRNA." 
+                },
+                correctAnswer: "C",
+                rationale: "Eukaryotic DNA is packaged into chromatin. The condensation state of this chromatin plays a major role in gene regulation. Genes within tightly packed heterochromatin are generally inaccessible and silent, while genes in open euchromatin are accessible for transcription. Modifying chromatin structure (e.g., via histone acetylation) is a key regulatory step not found in prokaryotes.",
+                source: "'Regulation at the genome level (regulating accessibility of gene for transcription)' is listed as the first level of eukaryotic regulation. (Regulation of Gene Expression, Page 12)"
+            },
+            {
+                learningObjective: "LO 3 (Regulation of Gene Expression): Draw the structure of a prototypical eukaryotic gene and identify the multiple levels at which the eukaryotic genes may be regulated.",
+                question: "A eukaryotic gene has a regulatory DNA element located 10,000 base pairs upstream of its promoter. A transcriptional activator protein binds to this element and significantly increases the rate of transcription. This distant regulatory element is best described as a(n):",
+                options: { 
+                    A: "Operator", 
+                    B: "Core promoter", 
+                    C: "Enhancer", 
+                    D: "Start codon" 
+                },
+                correctAnswer: "C",
+                rationale: "Enhancers are cis-acting regulatory DNA sequences in eukaryotes that can be located far away (many kilobases) from the gene they regulate, either upstream or downstream. They function by binding activator proteins, which then interact with the basal transcription machinery at the promoter, often through DNA looping, to enhance the rate of transcription.",
+                source: "'Enhancer - located 5' (always in bacteria) or 3' and far away from the promoter, recognized by transcriptional activators.' (Regulation of Gene Expression, Page 5)"
+            },
+            {
+                learningObjective: "LO 3 (Regulation of Gene Expression): Draw the structure of a prototypical eukaryotic gene and identify the multiple levels at which the eukaryotic genes may be regulated.",
+                question: "Which of the following events is part of the post-transcriptional processing of a primary RNA transcript in a eukaryotic nucleus?",
+                options: { 
+                    A: "Binding of RNA polymerase to the promoter", 
+                    B: "Removal of exons from the transcript", 
+                    C: "Addition of a 5' cap and 3' poly(A) tail", 
+                    D: "Binding of ribosomes to the Shine-Dalgarno sequence" 
+                },
+                correctAnswer: "C",
+                rationale: "After transcription in eukaryotes, the primary RNA transcript (pre-mRNA) must undergo several processing steps before it can be exported and translated. These include the addition of a 7-methylguanosine cap to the 5' end, the addition of a poly(A) tail to the 3' end, and the removal of introns (not exons) via splicing.",
+                source: "'Posttranscriptional processing' is listed as level 2 of eukaryotic regulation, and the diagram shows it occurring after 'Transcription initiation'. (Regulation of Gene Expression, Page 12)"
+            },
+            {
+                learningObjective: "LO 4 (Regulation of Gene Expression): Explain the role of DNA methylation and histone modifications in the regulation of gene expression and describe the epigenetic phenomena of “genomic imprinting”, particularly in the context of Prader Willi and Angelman syndromes.",
+                question: "A newborn is diagnosed with Prader-Willi syndrome due to a microdeletion on the paternal chromosome 15. The corresponding region on the maternal chromosome is intact but is not expressed. What is the epigenetic mechanism that prevents the expression of the maternal genes in this region?",
+                options: { 
+                    A: "Histone acetylation", 
+                    B: "Genomic imprinting via DNA methylation", 
+                    C: "RNA interference", 
+                    D: "A frameshift mutation" 
+                },
+                correctAnswer: "B",
+                rationale: "Genomic imprinting is an epigenetic process where certain genes are expressed in a parent-of-origin-specific manner. In the case of the Prader-Willi/Angelman region on chromosome 15, the genes responsible for Prader-Willi syndrome are normally expressed only from the paternal chromosome; the maternal copy is silenced (imprinted) by DNA methylation. If the paternal copy is deleted, there is no functional copy of the gene expressed, leading to the disease.",
+                source: "'...for the imprinted genes... only one of the alleles (paternally inherited or maternally inherited allele) is expressed the other allele being silenced by methylation. If mutations... result in the working allele... to be deleted, it would precipitate debilitating diseases... Two of these diseases, Prader-Willi and Angelman syndromes are well known...' (Regulation of Gene Expression, Page 21)"
+            },
+            {
+                learningObjective: "LO 4 (Regulation of Gene Expression): Explain the role of DNA methylation and histone modifications in the regulation of gene expression and describe the epigenetic phenomena of “genomic imprinting”, particularly in the context of Prader Willi and Angelman syndromes.",
+                question: "A researcher is studying a region of a chromosome that is transcriptionally silent and densely packed. Which combination of epigenetic marks would be most consistent with this region of heterochromatin?",
+                options: { 
+                    A: "High levels of histone acetylation and low levels of DNA methylation.", 
+                    B: "Low levels of histone acetylation and high levels of DNA methylation.", 
+                    C: "High levels of both histone acetylation and DNA methylation.", 
+                    D: "Low levels of both histone acetylation and DNA methylation." 
+                },
+                correctAnswer: "B",
+                rationale: "Gene silencing and the formation of condensed heterochromatin are associated with specific epigenetic modifications. Deacetylation of histones (removing acetyl groups) restores their positive charge, promoting tighter DNA packing. Methylation of DNA, particularly at CpG islands in promoter regions, is also a key feature of silenced genes.",
+                source: "'Histone modification at lysine residues – acetylation reduces compaction and increases accessibility... DNA methylation at 5th position on cytosine – promotes DNA compaction and reduces accessibility...' (Regulation of Gene Expression, Page 13)"
+            },
+            {
+                learningObjective: "LO 4 (Regulation of Gene Expression): Explain the role of DNA methylation and histone modifications in the regulation of gene expression and describe the epigenetic phenomena of “genomic imprinting”, particularly in the context of Prader Willi and Angelman syndromes.",
+                question: "During mammalian development, the global patterns of DNA methylation are erased and then re-established. In which cell type does the sex-specific methylation pattern for imprinted genes get established?",
+                options: { 
+                    A: "Somatic cells of the early embryo", 
+                    B: "Primordial germ cells (PGCs)", 
+                    C: "Zygote immediately after fertilization", 
+                    D: "Placental cells" 
+                },
+                correctAnswer: "B",
+                rationale: "Genomic imprints are erased during the development of primordial germ cells (PGCs). Then, during the differentiation of these germ cells into sperm or eggs, a new, sex-specific pattern of methylation is established. This ensures that the genes are correctly imprinted according to the sex of the individual before being passed on to the next generation.",
+                source: "'The second wave of global demethylation of the genome takes place only in the germline in primordial germ cells (PGCs) and is completed with the establishment of sex-specific methylation patterns during later stages of germ cell development.' (Regulation of Gene Expression, Page 17)"
+            },
+            {
+                learningObjective: "LO 5 (Regulation of Gene Expression): Discuss the basic architecture of eukaryotic transcription factors and the functioning of estrogen receptor.",
+                question: "The estrogen receptor is a Type I nuclear hormone receptor. In the absence of estrogen, where is the receptor primarily located within the cell, and what is it complexed with?",
+                options: { 
+                    A: "In the nucleus, bound to a corepressor.", 
+                    B: "In the nucleus, bound to a coactivator.", 
+                    C: "In the cytoplasm, bound to a heat shock protein (Hsp70).", 
+                    D: "In the plasma membrane, acting as a channel." 
+                },
+                correctAnswer: "C",
+                rationale: "Type I nuclear receptors, such as the estrogen receptor, are held in an inactive state in the cytoplasm. They are bound to a complex of inhibitory proteins, including heat shock protein 70 (Hsp70). Binding of the hormone (estrogen) causes a conformational change that releases Hsp70, allowing the receptor to dimerize and translocate to the nucleus.",
+                source: "'Type I receptors (NR) are found in the cytoplasm in the monomeric form in a complex with the heat shock protein Hsp70.' (Regulation of Gene Expression, Page 27)"
+            },
+            {
+                learningObjective: "LO 5 (Regulation of Gene Expression): Discuss the basic architecture of eukaryotic transcription factors and the functioning of estrogen receptor.",
+                question: "A patient with estrogen receptor-positive breast cancer is treated with tamoxifen. Tamoxifen binds to the estrogen receptor but induces a different conformational change than estrogen. How does this tamoxifen-induced conformation lead to an anti-estrogenic effect?",
+                options: { 
+                    A: "It prevents the receptor from binding to DNA.", 
+                    B: "It causes the rapid degradation of the receptor.", 
+                    C: "It promotes the binding of a corepressor instead of a coactivator.", 
+                    D: "It blocks the receptor from entering the nucleus." 
+                },
+                correctAnswer: "C",
+                rationale: "Tamoxifen is a selective estrogen receptor modulator (SERM). It acts as an antagonist in breast tissue because the conformational change it induces upon binding does not support the interaction of the receptor with the necessary coactivator proteins. Instead, it can promote the binding of corepressors, leading to the repression of estrogen-responsive genes.",
+                source: "'The conformational change induced by tamoxifen does not support interaction of the ER with the coactivator, thus inhibiting the ability of ER to activate expression of estrogen-responsive genes.' (Regulation of Gene Expression, Page 28)"
+            },
+            {
+                learningObjective: "LO 5 (Regulation of Gene Expression): Discuss the basic architecture of eukaryotic transcription factors and the functioning of estrogen receptor.",
+                question: "Eukaryotic transcription factors typically have a modular structure with distinct functional regions. The region responsible for recognizing and binding to a specific nucleotide sequence in an enhancer or promoter is known as the:",
+                options: { 
+                    A: "Ligand-binding domain", 
+                    B: "Transactivation domain", 
+                    C: "DNA-binding domain (DBD)", 
+                    D: "Dimerization domain" 
+                },
+                correctAnswer: "C",
+                rationale: "Transcription factors have a modular architecture. The DNA-binding domain (DBD) is the part of the protein that contains structural motifs (like zinc fingers or helix-turn-helix) that recognize and bind to specific DNA sequences (cis-elements). The transactivation domain is the region that interacts with coactivators and the basal transcription machinery to regulate transcription.",
+                source: "'Transcription factors have... distinct transactivation and DNA-binding domains (DBD).' (Regulation of Gene Expression, Page 25)"
+            },
+            {
+                learningObjective: "LO 6 (Regulation of Gene Expression): Describe the known roles of non-coding RNAs in the regulation of gene expression (e.g., RNAi such as miRNA and siRNA) and the process of X chromosome inactivation.",
+                question: "In female mammals, one of the two X chromosomes is randomly silenced during embryonic development to ensure dosage compensation with males. This silenced chromosome condenses into a Barr body. This process is initiated by the expression of a specific long non-coding RNA from the X chromosome that is to be inactivated. What is this lncRNA called?",
+                options: { 
+                    A: "miRNA-21", 
+                    B: "HOTAIR", 
+                    C: "XIST", 
+                    D: "MALAT1" 
+                },
+                correctAnswer: "C",
+                rationale: "X-inactivation is a classic example of regulation by a long non-coding RNA (lncRNA). The process is initiated by the transcription of the X-inactive specific transcript (XIST) RNA. The XIST RNA then 'coats' the chromosome from which it was transcribed, leading to a cascade of epigenetic modifications, including DNA methylation and histone deacetylation, that result in the formation of the condensed, transcriptionally silent Barr body.",
+                source: "'X-inactivation is initiated at ~200 cell stage, triggered by coating of XIST lncRNA, followed by hypermethylation of DNA and deacetylation of histones.' (Regulation of Gene Expression, Page 33)"
+            },
+            {
+                learningObjective: "LO 6 (Regulation of Gene Expression): Describe the known roles of non-coding RNAs in the regulation of gene expression (e.g., RNAi such as miRNA and siRNA) and the process of X chromosome inactivation.",
+                question: "A scientist introduces a synthetic, 22-nucleotide double-stranded RNA (siRNA) into a cell culture. This siRNA is designed to be perfectly complementary to a specific target mRNA. What is the most likely fate of the target mRNA after the siRNA is loaded into the RISC complex?",
+                options: { 
+                    A: "Its translation will be enhanced.", 
+                    B: "It will be sequestered in P-bodies.", 
+                    C: "It will be cleaved and degraded.", 
+                    D: "Its splicing pattern will be altered." 
+                },
+                correctAnswer: "C",
+                rationale: "Small interfering RNAs (siRNAs) typically exhibit full complementarity to their target mRNA. When an siRNA is loaded into the RNA-induced silencing complex (RISC), it guides the complex to the target mRNA. The perfect base pairing then triggers the Argonaute protein within RISC to act as an endonuclease, cleaving the mRNA and leading to its rapid degradation. This is the primary mechanism of gene silencing by siRNAs.",
+                source: "'siRNAs generally show full complementarity to their target mRNA... siRNAs shut down gene expression at a post-transcriptional level through mRNA degradation...' (Regulation of Gene Expression, Page 31)"
+            },
+            {
+                learningObjective: "LO 6 (Regulation of Gene Expression): Describe the known roles of non-coding RNAs in the regulation of gene expression (e.g., RNAi such as miRNA and siRNA) and the process of X chromosome inactivation.",
+                question: "A microRNA (miRNA) is processed and loaded into the RISC complex. It then binds to a target mRNA, typically in the 3' untranslated region (UTR). Unlike siRNAs, this binding is often characterized by partial complementarity. This partial complementarity most often leads to which of the following outcomes?",
+                options: { 
+                    A: "Splicing of the target mRNA", 
+                    B: "Translational repression", 
+                    C: "Increased stability of the mRNA", 
+                    D: "Cleavage of the target mRNA" 
+                },
+                correctAnswer: "B",
+                rationale: "The binding between miRNAs and their target mRNAs is usually imperfect, with mismatches particularly in the central region of the miRNA. This partial complementarity typically does not trigger the cleavage of the mRNA. Instead, it leads to the repression of translation and can also promote mRNA degradation or sequestration, effectively silencing the gene.",
+                source: "'While Watson-Crick base pairing between miRNAs and their targets is usually partial... miRNAs silence their target genes mainly through translational repression, enhancing mRNA degradation, and/or sequestering target mRNAs...' (Regulation of Gene Expression, Page 31)"
+            }
+        ];
+
+
+        const quizContainer = document.getElementById('quiz-container');
+        const themeToggleButton = document.getElementById('theme-toggle-button');
+        const bodyElement = document.body;
+
+        function applyTheme(theme) {
+            if (theme === 'light') {
+                bodyElement.classList.add('light-theme');
+                themeToggleButton.textContent = 'Switch to Dark Mode';
+            } else {
+                bodyElement.classList.remove('light-theme');
+                themeToggleButton.textContent = 'Switch to Light Mode';
+            }
+            localStorage.setItem('quizTheme', theme);
+        }
+
+        function loadQuiz() {
+            quizData.forEach((qData, index) => {
+                const questionBlock = document.createElement('div');
+                questionBlock.classList.add('question-block');
+                questionBlock.id = `q${index}`;
+
+                const loText = document.createElement('div');
+                loText.classList.add('learning-objective');
+                loText.textContent = qData.learningObjective;
+                questionBlock.appendChild(loText);
+
+                const questionText = document.createElement('p');
+                questionText.classList.add('question-text');
+                questionText.innerHTML = `${index + 1}. ${qData.question}`;
+                questionBlock.appendChild(questionText);
+
+                const optionsDiv = document.createElement('div');
+                optionsDiv.classList.add('options');
+
+                for (const optionKey in qData.options) {
+                    const optionId = `q${index}_${optionKey}`;
+                    const label = document.createElement('label');
+                    label.htmlFor = optionId;
+                    const radioInput = document.createElement('input');
+                    radioInput.type = 'radio';
+                    radioInput.name = `q${index}`;
+                    radioInput.value = optionKey;
+                    radioInput.id = optionId;
+                    const labelText = document.createElement('span');
+                    labelText.textContent = ` ${optionKey}. ${qData.options[optionKey]}`;
+                    label.appendChild(radioInput);
+                    label.appendChild(labelText);
+                    optionsDiv.appendChild(label);
+                }
+                questionBlock.appendChild(optionsDiv);
+
+                const buttonContainer = document.createElement('div');
+                buttonContainer.classList.add('button-container');
+
+                const checkButton = document.createElement('button');
+                checkButton.textContent = 'Check Answer';
+                checkButton.classList.add('check-button');
+                checkButton.onclick = () => checkAnswer(index);
+                buttonContainer.appendChild(checkButton);
+                
+                questionBlock.appendChild(buttonContainer);
+
+                const feedbackDiv = document.createElement('div');
+                feedbackDiv.classList.add('feedback');
+                questionBlock.appendChild(feedbackDiv);
+
+                quizContainer.appendChild(questionBlock);
+            });
+        }
+
+        function checkAnswer(questionIndex) {
+            const questionBlockElement = document.getElementById(`q${questionIndex}`);
+            const selectedRadioButton = questionBlockElement.querySelector('input[type="radio"]:checked');
+
+            if (!selectedRadioButton) {
+                alert("Please select an answer first.");
+                return;
+            }
+
+            const selectedOptionKey = selectedRadioButton.value;
+            const qData = quizData[questionIndex];
+            const feedbackDiv = questionBlockElement.querySelector('.feedback');
+            const correct = selectedOptionKey === qData.correctAnswer;
+
+            let feedbackHTML = '';
+
+            if (correct) {
+                feedbackHTML = `<span class="feedback-status">Correct!</span>`;
+                feedbackDiv.className = 'feedback correct';
+            } else {
+                 feedbackHTML = `<span class="feedback-status">Incorrect.</span> The correct answer is ${qData.correctAnswer}.`;
+                feedbackDiv.className = 'feedback incorrect';
+            }
+
+            feedbackHTML += `<div class="feedback-rationale"><strong>Rationale:</strong> ${qData.rationale}</div>`;
+            feedbackHTML += `<div class="feedback-source">${qData.source}</div>`;
+            feedbackDiv.innerHTML = feedbackHTML;
+        }
+
+        themeToggleButton.addEventListener('click', () => {
+            if (bodyElement.classList.contains('light-theme')) {
+                applyTheme('dark');
+            } else {
+                applyTheme('light');
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('quizTheme') || 'dark';
+            applyTheme(savedTheme);
+            loadQuiz();
+        });
+
+    </script>
+
+</body>
+</html>
